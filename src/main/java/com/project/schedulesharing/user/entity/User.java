@@ -26,6 +26,8 @@ public class User {
     private String introduction;
     @Column(name = "IMGPATH")
     private String img_path;
+    @Column(name = "IDUSE")
+    private boolean IdUse = true;
     @Builder
     public User(String id, String pw, String email, String name, String introduction, String img_path) {
         this.id = id;
@@ -33,6 +35,14 @@ public class User {
         this.email = email;
         this.name = name;
         /*this.roles = roles;*/
+        this.introduction = introduction;
+        this.img_path = img_path;
+    }
+
+    public void updata(String pw,String email, String name, String introduction, String img_path){
+        this.pw = pw;
+        this.email = email;
+        this.name = name;
         this.introduction = introduction;
         this.img_path = img_path;
     }
