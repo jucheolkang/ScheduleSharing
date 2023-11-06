@@ -13,21 +13,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
+
     @Id
     @Column(name = "ID",nullable = false)
     private String id;
+
     @Column(name = "PW",nullable = false)
     private String pw;
+
     @Column(name = "EMAIL")
     private String email;
+
     @Column(name = "NAME")
     private String name;
+
     @Column(name = "INTRODUCTION")
     private String introduction;
+
     @Column(name = "IMGPATH")
     private String img_path;
+
     @Column(name = "IDUSE")
     private boolean IdUse = true;
+
+    @Column
+    private boolean UserUse = true;
+
     @Builder
     public User(String id, String pw, String email, String name, String introduction, String img_path) {
         this.id = id;
@@ -46,5 +57,7 @@ public class User {
         this.introduction = introduction;
         this.img_path = img_path;
     }
+
+
 
 }

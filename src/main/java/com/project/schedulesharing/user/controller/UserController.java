@@ -3,6 +3,7 @@ package com.project.schedulesharing.user.controller;
 
 import com.project.schedulesharing.user.dto.UserPatchDto;
 import com.project.schedulesharing.user.dto.UserSaveDto;
+import com.project.schedulesharing.user.repository.UserRepository;
 import com.project.schedulesharing.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,12 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class UserController {
     public final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody UserSaveDto userSaveDto){
+    public void save(@RequestBody UserSaveDto userSaveDto){
         userService.saveUser(userSaveDto);
-        return ResponseEntity.created(URI.create("/user")).build();
+        /*return ResponseEntity.created(URI.create("/user")).build();*/
     }
 
     @PatchMapping("/{userId}")
