@@ -31,10 +31,19 @@ public class UserService {
     }
 
 
+
+
     public void updateUser(String id, UserPatchDto userPatchDto){
         User user = existUser(id);
         menuStatus(user);
         user.updata(userPatchDto.getPw(),userPatchDto.getEmail(),userPatchDto.getName(),userPatchDto.getIntroduction(),userPatchDto.getImg_path());
+    }
+
+
+    public void deleteMenu(String id) {
+        User user = existUser(id);
+        menuStatus(user);
+        user.changeUse(false);
     }
 
     private static void menuStatus(User user) {

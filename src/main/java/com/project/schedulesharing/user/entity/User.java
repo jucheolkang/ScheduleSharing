@@ -58,6 +58,10 @@ public class User {
         this.img_path = img_path;
     }
 
+    public void changeUse(boolean Useruse){
+        this.UserUse = Useruse;
+    }
+
 
 
 }
