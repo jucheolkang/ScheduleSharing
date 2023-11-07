@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.List;
 
 
 @Service
@@ -35,18 +34,18 @@ public class UserService {
 
     public void updateUser(String id, UserPatchDto userPatchDto){
         User user = existUser(id);
-        menuStatus(user);
+        UserStatus(user);
         user.updata(userPatchDto.getPw(),userPatchDto.getEmail(),userPatchDto.getName(),userPatchDto.getIntroduction(),userPatchDto.getImg_path());
     }
 
 
     public void deleteMenu(String id) {
         User user = existUser(id);
-        menuStatus(user);
+        UserStatus(user);
         user.changeUse(false);
     }
 
-    private static void menuStatus(User user) {
+    private static void UserStatus(User user) {
         if (!user.isUserUse()) throw new BusinessExceptionHandler(ErrorCode.ID_NOT_FOUND);
     }
 
