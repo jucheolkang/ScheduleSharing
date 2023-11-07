@@ -39,7 +39,7 @@ public class UserService {
     }
 
 
-    public void deleteMenu(String id) {
+    public void deleteUser(String id) {
         User user = existUser(id);
         UserStatus(user);
         user.changeUse(false);

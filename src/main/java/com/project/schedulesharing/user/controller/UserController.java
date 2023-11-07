@@ -17,12 +17,11 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class UserController {
     public final UserService userService;
-    private final UserRepository userRepository;
 
     @PostMapping
-    public void save(@RequestBody UserSaveDto userSaveDto){
+    public ResponseEntity<Object> save(@RequestBody UserSaveDto userSaveDto){
         userService.saveUser(userSaveDto);
-        /*return ResponseEntity.created(URI.create("/user")).build();*/
+        return ResponseEntity.created(URI.create("/user")).build();
     }
 
     @PatchMapping("/{userId}")
@@ -33,7 +32,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity deleteMenu (@PathVariable String userId) {
-        userService.deleteMenu(userId);
+        userService.deleteUser(userId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
