@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -18,19 +19,24 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class WebSecurityConfig {
 
     @Bean
+    PasswordEncoder passwordEncoder() {
+        return new SimplePasswordEncoder();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable()
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/login","/signup","/user").permitAll()
+                        .requestMatchers("/user").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
-                        .loginPage("/login")
+                        /*.loginPage("/login")*/
                         .loginProcessingUrl("/home")
                         .usernameParameter("userid")
                         .passwordParameter("pw")
-                        .defaultSuccessUrl("/view/dashboard", true)
+                        .defaultSuccessUrl("/home", true)
                         .permitAll()
                 )
                 .logout(withDefaults());
@@ -39,9 +45,5 @@ public class WebSecurityConfig {
 
     }
 
-    @Bean
-    public BCryptPasswordEncoder encodePassword() {
-        return new BCryptPasswordEncoder();
-    }
 
 }

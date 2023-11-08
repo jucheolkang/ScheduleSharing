@@ -22,10 +22,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
 
     public void saveUser(UserSaveDto userSaveDto){
@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(User.builder()
                 .id(userSaveDto.getId())
                 .pw(userSaveDto.getPw())
-                .email(bCryptPasswordEncoder.encode(userSaveDto.getEmail()))
+                .email(userSaveDto.getEmail())
                 .name(userSaveDto.getName())
                 .introduction(userSaveDto.getIntroduction())
                 .img_path(userSaveDto.getImg_path())
@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
         if (!user.isUserUse()) throw new BusinessExceptionHandler(ErrorCode.ID_NOT_FOUND);
     }
 
-    private User existUser(String userId) {
+    public User existUser(String userId) {
         Optional<User> op = userRepository.findById(userId);
         User user = op.orElseThrow(() -> new BusinessExceptionHandler(ErrorCode.ID_NOT_FOUND));
         return user;
@@ -78,8 +78,5 @@ public class UserService implements UserDetailsService {
     }
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-    }
+
 }
