@@ -8,6 +8,10 @@ import com.project.schedulesharing.user.dto.UserSaveDto;
 
 import com.project.schedulesharing.user.entity.User;
 import com.project.schedulesharing.user.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,15 +22,24 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserService {
+public class UserService implements UserDetailsService {
+
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     public void saveUser(UserSaveDto userSaveDto){
         if(existId(userSaveDto.getId())){
             throw new BusinessExceptionHandler(ErrorCode.SAME_ID);
         }
-        userRepository.save(userSaveDto.toEntity());
+        userRepository.save(User.builder()
+                .id(userSaveDto.getId())
+                .pw(userSaveDto.getPw())
+                .email(bCryptPasswordEncoder.encode(userSaveDto.getEmail()))
+                .name(userSaveDto.getName())
+                .introduction(userSaveDto.getIntroduction())
+                .img_path(userSaveDto.getImg_path())
+                .build());
     }
 
 
@@ -65,5 +78,8 @@ public class UserService {
     }
 
 
-
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
 }

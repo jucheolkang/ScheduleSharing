@@ -3,14 +3,16 @@ package com.project.schedulesharing.user.controller;
 
 import com.project.schedulesharing.user.dto.UserPatchDto;
 import com.project.schedulesharing.user.dto.UserSaveDto;
-import com.project.schedulesharing.user.repository.UserRepository;
 import com.project.schedulesharing.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/user")
@@ -19,9 +21,9 @@ public class UserController {
     public final UserService userService;
 
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody UserSaveDto userSaveDto){
+    public String save(@RequestBody UserSaveDto userSaveDto){
         userService.saveUser(userSaveDto);
-        return ResponseEntity.created(URI.create("/user")).build();
+        return "redirect:/login";
     }
 
     @PatchMapping("/{userId}")
@@ -34,6 +36,13 @@ public class UserController {
     public ResponseEntity deleteMenu (@PathVariable String userId) {
         userService.deleteUser(userId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response){
+        new SecurityContextLogoutHandler().logout(request, response,
+                SecurityContextHolder.getContext().getAuthentication());
+        return "redirect:/login";
     }
 
 
